@@ -14,6 +14,12 @@ const schemas = {
     sex: Joi.string().regex(/(?:male|female)/),
     agreedWithTerms: Joi.boolean().valid(true)
   }),
+  '/drinks': Joi.object().keys({
+    name: Joi.string().min(3).max(50),
+    strength: Joi.number().positive(),
+    code: Joi.string().regex(/^[a-z0-9]+$/i),
+    alcoholic: Joi.any().when('strength', {is: Joi.number().greater(0), then: Joi.boolean().valid(true)})
+  }),
 };
 
 exports.check = function (schema, body) {
